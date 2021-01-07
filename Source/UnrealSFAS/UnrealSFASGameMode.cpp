@@ -13,3 +13,39 @@ AUnrealSFASGameMode::AUnrealSFASGameMode()
 		DefaultPawnClass = PlayerPawnBPClass.Class;
 	}
 }
+
+// UpgradeOptions AUnrealSFASGameMode::GetUpgradesOptions()
+// {
+// 	std::string upgrade1, upgrade2, upgrade3;
+// 	int upgradeIndex1, upgradeIndex2, upgradeIndex3;
+//
+// 	upgradeIndex1 = rand() % 0 + upgrades.size() - 1;
+// 	upgrade1 = upgrades[upgradeIndex1];
+//
+// 	do
+// 	{
+// 		upgradeIndex2 = rand() % 0 + upgrades.size() - 1;
+// 	}while(upgradeIndex2 == upgradeIndex1);
+// 	upgrade2 = upgrades[upgradeIndex2];
+// 	
+// 	do
+// 	{
+// 		upgradeIndex3 = rand() % 0 + upgrades.size() - 1;
+// 	}while (upgradeIndex3 == upgradeIndex1 || upgradeIndex3 == upgradeIndex2);
+// 	upgrade3 = upgrades[upgradeIndex3];
+// 	
+// 	UpgradeOptions upgradesToReturn = {upgrade1, upgrade2, upgrade3};
+// 	return upgradesToReturn;
+// }
+
+FireballModifier AUnrealSFASGameMode::GetModifier()
+{
+	return fireballModifier;
+}
+
+
+float AUnrealSFASGameMode::GetCooldown()
+{
+	return fireballCooldown;
+}
+

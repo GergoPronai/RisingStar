@@ -8,7 +8,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
-#include  "Master_Interactable.h"
+#include "Master_Interactable.h"
 
 //////////////////////////////////////////////////////////////////////////
 // AUnrealSFASCharacter
@@ -22,6 +22,8 @@ AUnrealSFASCharacter::AUnrealSFASCharacter()
 	BaseTurnRate = 45.f;
 	BaseLookUpRate = 45.f;
 
+	fireballCooldown = 0.0f;
+	
 	// Don't rotate when the controller rotates. Let that just affect the camera.
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
@@ -46,11 +48,22 @@ AUnrealSFASCharacter::AUnrealSFASCharacter()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
+
+	projectileSpawnPoint = CreateDefaultSubobject<USceneComponent>(TEXT("Projectile Spawn Point"));
+	projectileSpawnPoint->SetupAttachment(Mesh);
+	projectileSpawnPoint->SetRelativeLocation(FVector(0.0f, 50.0f, 140.0f));
+}
+
+
+// Called when the game starts or when spawned
+void AUnrealSFASCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+	gameModeRef = (AUnrealSFASGameMode*)GetWorld()->GetAuthGameMode();
 }
 
 //////////////////////////////////////////////////////////////////////////
 // Input
-
 void AUnrealSFASCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
 	// Set up gameplay key bindings
@@ -77,8 +90,19 @@ void AUnrealSFASCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 
 	// VR headset functionality
 	PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &AUnrealSFASCharacter::OnResetVR);
+
+	// Spell use
+	PlayerInputComponent->BindAction("Spell_1", IE_Pressed, this, &AUnrealSFASCharacter::Spell1);
 }
 
+
+void AUnrealSFASCharacter::Tick(float DeltaTime)
+{
+	
+		
+	
+	Super::Tick(DeltaTime);
+}
 
 void AUnrealSFASCharacter::OnResetVR()
 {
@@ -153,4 +177,26 @@ void AUnrealSFASCharacter::MoveRight(float Value)
 		// add movement in that direction
 		AddMovementInput(Direction, Value);
 	}
+}
+
+void AUnrealSFASCharacter::Spell1()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Spell1"));
+	if(fireballClass)
+	{
+		if(!onFireballCooldown)
+		{
+			FVector spawnLocation = projectileSpawnPoint->GetComponentLocation();
+			FRotator spawnRotation = projectileSpawnPoint->GetComponentRotation();
+			AFireBall* fireBall = GetWorld()->SpawnActor<AFireBall>(fireballClass, spawnLocation, spawnRotation);
+			onFireballCooldown = true;
+			GetWorld()->GetTimerManager().SetTimer(timer, this, &AUnrealSFASCharacter::ResetTimer, gameModeRef->GetCooldown(), false);
+		}
+	}
+}
+
+void AUnrealSFASCharacter::ResetTimer()
+{
+	onFireballCooldown = false;
+
 }

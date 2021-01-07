@@ -5,7 +5,19 @@
     <projectFile>Intermediate/ProjectFiles/UE4.vcxproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="17e7de6f-aee4-4dc6-8f49-6230e08edd71" name="Default Changelist" comment="" />
+    <list default="true" id="17e7de6f-aee4-4dc6-8f49-6230e08edd71" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.UnrealSFAS/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.UnrealSFAS/.idea/contentModel.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.UnrealSFAS/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.UnrealSFAS/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config/DefaultEditor.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEditor.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config/DefaultInput.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultInput.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/ThirdPersonCPP/Blueprints/ThirdPersonCharacter.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/ThirdPersonCPP/Blueprints/ThirdPersonCharacter.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/ThirdPersonCPP/Maps/MazeBase.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/ThirdPersonCPP/Maps/MazeBase.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/UnrealSFAS/UnrealSFAS.Build.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Source/UnrealSFAS/UnrealSFAS.Build.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/UnrealSFAS/UnrealSFASCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/UnrealSFAS/UnrealSFASCharacter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/UnrealSFAS/UnrealSFASCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/UnrealSFAS/UnrealSFASCharacter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/UnrealSFAS/UnrealSFASGameMode.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/UnrealSFAS/UnrealSFASGameMode.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/UnrealSFAS/UnrealSFASGameMode.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/UnrealSFAS/UnrealSFASGameMode.h" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,12 +26,26 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="IdeDocumentHistory">
+    <changedPaths>
+      <option value="$PROJECT_DIR$/Source/UnrealSFAS/UnrealSFAS.Build.cs" />
+      <option value="$PROJECT_DIR$/Source/UnrealSFAS/UnrealSFASMaze.cpp" />
+      <option value="C:/UnrealEngine/UE_4.25/Engine/Source/Runtime/Engine/Classes/GameFramework/Character.h" />
+      <option value="$PROJECT_DIR$/Source/UnrealSFAS/FireBall.cpp" />
+      <option value="$PROJECT_DIR$/Source/UnrealSFAS/UnrealSFASGameMode.cpp" />
+      <option value="$PROJECT_DIR$/Source/UnrealSFAS/FireBall.h" />
+      <option value="$PROJECT_DIR$/Source/UnrealSFAS/UnrealSFASCharacter.cpp" />
+      <option value="$PROJECT_DIR$/Source/UnrealSFAS/UnrealSFASGameMode.h" />
+      <option value="$PROJECT_DIR$/Source/UnrealSFAS/UnrealSFASCharacter.h" />
+    </changedPaths>
+  </component>
   <component name="ProjectId" id="1l0xxNhV9Lah2mMtFtVM0vEHi5x" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -248,13 +274,27 @@
       <option name="presentableId" value="Default" />
       <updated>1606748056707</updated>
       <workItem from="1606748060429" duration="467000" />
+      <workItem from="1607192668519" duration="296000" />
+      <workItem from="1607949304545" duration="4370000" />
+      <workItem from="1608198960989" duration="2163000" />
+      <workItem from="1608330447148" duration="487000" />
+      <workItem from="1609015746847" duration="659000" />
+      <workItem from="1609065717417" duration="334000" />
+      <workItem from="1609075970310" duration="1404000" />
+      <workItem from="1609077465517" duration="4918000" />
+      <workItem from="1609207548755" duration="48000" />
+      <workItem from="1609207715657" duration="1198000" />
+      <workItem from="1609448186984" duration="5448000" />
+      <workItem from="1609499134209" duration="735000" />
+      <workItem from="1609523328780" duration="2652000" />
+      <workItem from="1609773818575" duration="36000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
-  <component name="UnityProjectConfiguration" hasMinimizedUI="null" />
+  <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />

@@ -3,14 +3,24 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "UnrealSFASGameMode.h"
+#include "FireBall.h"
 #include "GameFramework/Character.h"
 #include "UnrealSFASCharacter.generated.h"
+
 
 UCLASS(config=Game)
 class AUnrealSFASCharacter : public ACharacter
 {
 	GENERATED_BODY()
+	float fireballCooldown;
+	void ResetTimer();
+	bool onFireballCooldown = false;
 
+	AUnrealSFASGameMode* gameModeRef;
+	UPROPERTY(VisibleAnywhere)
+	FTimerHandle timer;
+	
 	/** Camera boom positioning the camera behind the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class USpringArmComponent* CameraBoom;
@@ -18,9 +28,21 @@ class AUnrealSFASCharacter : public ACharacter
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FollowCamera;
+	
+	/** Projectile **/
+	UPROPERTY(VisibleAnywhere)
+	USceneComponent* projectileSpawnPoint;
+
+	/** Spell References **/
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<AFireBall> fireballClass;
+		
+	/** Spell Cast **/
+	void Spell1();
 public:
 	AUnrealSFASCharacter();
 
+	virtual void Tick(float DeltaTime) override;
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseTurnRate;
@@ -30,6 +52,7 @@ public:
 	float BaseLookUpRate;
 
 protected:
+	virtual void BeginPlay() override;
 
 	/** Resets HMD orientation in VR. */
 	void OnResetVR();

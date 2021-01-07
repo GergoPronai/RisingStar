@@ -43527,6 +43527,8 @@
         <e p="UnrealSFAS" t="Include">
           <e p="Chest.cpp" t="Include" />
           <e p="Chest.h" t="Include" />
+          <e p="FireBall.cpp" t="Include" />
+          <e p="FireBall.h" t="Include" />
           <e p="Master_Interactable.cpp" t="Include" />
           <e p="Master_Interactable.h" t="Include" />
           <e p="UnrealSFAS.Build.cs" t="Include" />
