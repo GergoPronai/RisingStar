@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "UnrealSFASGameMode.h"
 #include "FireBall.h"
+#include "Slower.h"
 #include "GameFramework/Character.h"
 #include "UnrealSFASCharacter.generated.h"
 
@@ -14,9 +15,16 @@ class AUnrealSFASCharacter : public ACharacter
 {
 	GENERATED_BODY()
 	float fireballCooldown;
-	void ResetTimer();
 	bool onFireballCooldown = false;
+	void FireballResetTimer();
+	
+	float slowerCooldown;
+	bool onSlowerCooldown = false;
+	void SlowerResetTimer();
 
+	// Used to make the spells avaliable after the cool down
+	// Needs the name of the spell passed
+	
 	AUnrealSFASGameMode* gameModeRef;
 	UPROPERTY(VisibleAnywhere)
 	FTimerHandle timer;
@@ -36,9 +44,13 @@ class AUnrealSFASCharacter : public ACharacter
 	/** Spell References **/
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<AFireBall> fireballClass;
+	
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<ASlower> slowerClass;
 		
 	/** Spell Cast **/
 	void Spell1();
+	void Spell2();
 public:
 	AUnrealSFASCharacter();
 

@@ -93,6 +93,7 @@ void AUnrealSFASCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 
 	// Spell use
 	PlayerInputComponent->BindAction("Spell_1", IE_Pressed, this, &AUnrealSFASCharacter::Spell1);
+	PlayerInputComponent->BindAction("Spell_2", IE_Pressed, this, &AUnrealSFASCharacter::Spell2);
 }
 
 
@@ -190,13 +191,37 @@ void AUnrealSFASCharacter::Spell1()
 			FRotator spawnRotation = projectileSpawnPoint->GetComponentRotation();
 			AFireBall* fireBall = GetWorld()->SpawnActor<AFireBall>(fireballClass, spawnLocation, spawnRotation);
 			onFireballCooldown = true;
-			GetWorld()->GetTimerManager().SetTimer(timer, this, &AUnrealSFASCharacter::ResetTimer, gameModeRef->GetCooldown(), false);
+			GetWorld()->GetTimerManager().SetTimer(timer, this, &AUnrealSFASCharacter::FireballResetTimer, gameModeRef->FireballGetCooldown(), false);
 		}
 	}
 }
 
-void AUnrealSFASCharacter::ResetTimer()
+void AUnrealSFASCharacter::Spell2()
 {
-	onFireballCooldown = false;
+	UE_LOG(LogTemp, Warning, TEXT("Spell2"));
+	if (slowerClass)
+	{
+		if (!onSlowerCooldown)
+		{
+			FVector spawnLocation = projectileSpawnPoint->GetComponentLocation();
+			FRotator spawnRotation = projectileSpawnPoint->GetComponentRotation();
+			ASlower* slower = GetWorld()->SpawnActor<ASlower>(slowerClass, spawnLocation, spawnRotation);
+			onSlowerCooldown = true;
+			GetWorld()->GetTimerManager().SetTimer(timer, this, &AUnrealSFASCharacter::SlowerResetTimer, gameModeRef->SlowerGetCooldown(), false);
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("NO SPELL DETECTED"));
+	}
+}
 
+void AUnrealSFASCharacter::FireballResetTimer()
+{
+		onFireballCooldown = false;
+}
+
+void AUnrealSFASCharacter::SlowerResetTimer()
+{
+	onSlowerCooldown = false;
 }

@@ -38,14 +38,24 @@ AUnrealSFASGameMode::AUnrealSFASGameMode()
 // 	return upgradesToReturn;
 // }
 
-FireballModifier AUnrealSFASGameMode::GetModifier()
+FireballModifier AUnrealSFASGameMode::FireballGetModifier()
 {
 	return fireballModifier;
 }
 
 
-float AUnrealSFASGameMode::GetCooldown()
+float AUnrealSFASGameMode::FireballGetCooldown()
 {
 	return fireballCooldown;
 }
 
+SlowerModifier AUnrealSFASGameMode::SlowerGetModifier()
+{
+	return slowerModifire;
+}
+
+
+float AUnrealSFASGameMode::SlowerGetCooldown()
+{
+	return slowerCooldown;
+}

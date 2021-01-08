@@ -11,6 +11,11 @@
 #include "GameFramework/GameModeBase.h"
 #include "UnrealSFASGameMode.generated.h"
 
+struct SlowerModifier
+{
+	float cooldownModifier = 1.0f;
+};
+
 
 struct FireballModifier
 {
@@ -31,13 +36,15 @@ class AUnrealSFASGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 private:
-
-	// Effects
+	// FireballEffects
 	float fireballDamage = 10.0f;
 	float fireballCooldown = 2.5f;
 	float fireballPenertartion = 0.0f;
-
 	bool isFireballUnlocked = false;
+
+	// SlowerEffects
+	float slowerCooldown = 3.5f;
+	bool isSlowerUnlocked = false;
 	
 	std::vector<std::string> upgrades =
 	{
@@ -48,15 +55,19 @@ private:
 		"Slow Duration",
 		"Slow Cooldown",
 	};
+	
 	FireballModifier fireballModifier;
+	SlowerModifier slowerModifire;
+
 public:
 	AUnrealSFASGameMode();
 	UpgradeOptions GetUpgradesOptions();
 	void SetUpgrade();
-	FireballModifier GetModifier();
-
-	float GetCooldown();
+	FireballModifier FireballGetModifier();
+	float FireballGetCooldown();
 	
+	SlowerModifier SlowerGetModifier();
+	float SlowerGetCooldown();
 };
 
 
