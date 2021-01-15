@@ -3,6 +3,10 @@
 
 #include "FireBall.h"
 
+#include "UnrealSFASCharacter.h"
+#include "Kismet/GameplayStatics.h"
+
+
 // Sets default values
 AFireBall::AFireBall()
 {
@@ -24,13 +28,16 @@ AFireBall::AFireBall()
 	projectileMovement->MaxSpeed = movementSpeed;
 	projectileMovement->InitialSpeed = movementSpeed;
 	InitialLifeSpan = 10.0f;
+
+	mesh->SetNotifyRigidBodyCollision(true);
 }
 
 // Called when the game starts or when spawned
 void AFireBall::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	gameModeRef = (AUnrealSFASGameMode*)GetWorld()->GetAuthGameMode();
+	OnActorHit.AddDynamic(this, &AFireBall::OnHit);
 }
 
 // Called every frame
@@ -39,4 +46,19 @@ void AFireBall::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-
+void AFireBall::OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit)
+{
+	if(OtherActor->GetClass()->IsChildOf(AUnrealSFASCharacter::StaticClass()))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Hit"));
+		AActor* projectileOwner = GetOwner();
+		UGameplayStatics::ApplyDamage(
+			OtherActor,
+			gameModeRef->GetFireballDamage(),
+			projectileOwner->GetInstigatorController(),
+			this,
+			UDamageType::StaticClass()
+		);
+	}
+	Destroy();
+}

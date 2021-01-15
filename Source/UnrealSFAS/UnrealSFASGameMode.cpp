@@ -49,6 +49,12 @@ float AUnrealSFASGameMode::FireballGetCooldown()
 	return fireballCooldown;
 }
 
+float AUnrealSFASGameMode::GetFireballDamage()
+{
+	return (fireballDamage + fireballModifier.damageModifier);
+}
+
+
 SlowerModifier AUnrealSFASGameMode::SlowerGetModifier()
 {
 	return slowerModifire;

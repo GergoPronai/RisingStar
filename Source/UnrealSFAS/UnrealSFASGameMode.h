@@ -5,8 +5,6 @@
 #include <vector>
 #include<string>
 
-#include "FireBall.h"
-
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "UnrealSFASGameMode.generated.h"
@@ -37,7 +35,7 @@ class AUnrealSFASGameMode : public AGameModeBase
 	GENERATED_BODY()
 private:
 	// FireballEffects
-	float fireballDamage = 10.0f;
+	float fireballDamage = 50.0f;
 	float fireballCooldown = 2.5f;
 	float fireballPenertartion = 0.0f;
 	bool isFireballUnlocked = false;
@@ -65,6 +63,7 @@ public:
 	void SetUpgrade();
 	FireballModifier FireballGetModifier();
 	float FireballGetCooldown();
+	float GetFireballDamage();
 	
 	SlowerModifier SlowerGetModifier();
 	float SlowerGetCooldown();

@@ -15,11 +15,11 @@ class UNREALSFAS_API ASlower : public AActor
 		UPROPERTY(EditAnywhere)
 		float movementSpeed;
 	UPROPERTY(VisibleAnywhere)
-		UStaticMeshComponent* mesh;
+	UStaticMeshComponent* mesh;
 	UPROPERTY(VisibleAnywhere)
-		UProjectileMovementComponent* projectileMovement;
+	UProjectileMovementComponent* projectileMovement;
 	UPROPERTY()
-		FVector moveAmount;
+	FVector moveAmount;
 	
 public:	
 	// Sets default values for this actor's properties

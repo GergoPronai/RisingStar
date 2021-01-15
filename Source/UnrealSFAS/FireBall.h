@@ -2,7 +2,10 @@
 
 #pragma once
 
+
 #include "CoreMinimal.h"
+
+#include "UnrealSFASGameMode.h"
 #include "GameFramework/Actor.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 
@@ -15,15 +18,19 @@ UCLASS()
 class UNREALSFAS_API AFireBall : public AActor
 {
 	GENERATED_BODY()
+
+	UPROPERTY(VisibleAnywhere)
+	AUnrealSFASGameMode* gameModeRef;
+	
 	UPROPERTY(EditAnywhere) 
-		float movementSpeed;
+	float movementSpeed;
 	UPROPERTY(VisibleAnywhere)
-		UStaticMeshComponent* mesh;
+	UStaticMeshComponent* mesh;
 	UPROPERTY(VisibleAnywhere)
-		UProjectileMovementComponent* projectileMovement;
+	UProjectileMovementComponent* projectileMovement;
 	UPROPERTY()
-		FVector moveAmount;
-		
+	FVector moveAmount;
+	
 public:	
 	// Sets default values for this actor's properties
 	AFireBall();
@@ -35,5 +42,8 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
+	
+private:
+	UFUNCTION()
+	void OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit);
 };

@@ -99,9 +99,6 @@ void AUnrealSFASCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 
 void AUnrealSFASCharacter::Tick(float DeltaTime)
 {
-	
-		
-	
 	Super::Tick(DeltaTime);
 }
 
@@ -190,6 +187,7 @@ void AUnrealSFASCharacter::Spell1()
 			FVector spawnLocation = projectileSpawnPoint->GetComponentLocation();
 			FRotator spawnRotation = projectileSpawnPoint->GetComponentRotation();
 			AFireBall* fireBall = GetWorld()->SpawnActor<AFireBall>(fireballClass, spawnLocation, spawnRotation);
+			fireBall->SetOwner(this);
 			onFireballCooldown = true;
 			GetWorld()->GetTimerManager().SetTimer(timer, this, &AUnrealSFASCharacter::FireballResetTimer, gameModeRef->FireballGetCooldown(), false);
 		}
@@ -210,10 +208,6 @@ void AUnrealSFASCharacter::Spell2()
 			GetWorld()->GetTimerManager().SetTimer(timer, this, &AUnrealSFASCharacter::SlowerResetTimer, gameModeRef->SlowerGetCooldown(), false);
 		}
 	}
-	else
-	{
-		UE_LOG(LogTemp, Error, TEXT("NO SPELL DETECTED"));
-	}
 }
 
 void AUnrealSFASCharacter::FireballResetTimer()
@@ -224,4 +218,16 @@ void AUnrealSFASCharacter::FireballResetTimer()
 void AUnrealSFASCharacter::SlowerResetTimer()
 {
 	onSlowerCooldown = false;
+}
+
+float AUnrealSFASCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	fHealth -= DamageAmount;
+	if(fHealth <= 0.0f)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Dead"));
+		Destroy();
+	}
+
+	return DamageAmount;
 }

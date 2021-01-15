@@ -21,7 +21,7 @@ class AUnrealSFASCharacter : public ACharacter
 	float slowerCooldown;
 	bool onSlowerCooldown = false;
 	void SlowerResetTimer();
-
+	float fHealth = 100.0f;
 	// Used to make the spells avaliable after the cool down
 	// Needs the name of the spell passed
 	
@@ -105,6 +105,6 @@ public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
-
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 };
 
