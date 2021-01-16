@@ -3,6 +3,9 @@
 
 #include "Slower.h"
 
+#include "UnrealSFASCharacter.h"
+#include "Kismet/GameplayStatics.h"
+
 // Sets default values
 ASlower::ASlower()
 {
@@ -25,13 +28,30 @@ ASlower::ASlower()
 void ASlower::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	gameModeRef = (AUnrealSFASGameMode*)GetWorld()->GetAuthGameMode();
+	OnActorHit.AddDynamic(this, &ASlower::OnHit);
 }
 
 // Called every frame
 void ASlower::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
+
+void ASlower::OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit)
+{
+	if(OtherActor->GetClass()->IsChildOf(AUnrealSFASCharacter::StaticClass()))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Slow effect applied"));
+		AActor* projectileOwner = GetOwner();
+		UGameplayStatics::ApplyDamage(
+			OtherActor,
+			gameModeRef->GetSlowerEffect(),
+			projectileOwner->GetInstigatorController(),
+			this,
+			UDamageType::StaticClass()
+		);
+	}
+	Destroy();
+}

@@ -65,3 +65,9 @@ float AUnrealSFASGameMode::SlowerGetCooldown()
 {
 	return slowerCooldown;
 }
+
+float AUnrealSFASGameMode::GetSlowerEffect()
+{
+	return (slowerAmount + slowerModifire.amountModifier);
+}
+

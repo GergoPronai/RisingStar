@@ -21,7 +21,10 @@ class AUnrealSFASCharacter : public ACharacter
 	float slowerCooldown;
 	bool onSlowerCooldown = false;
 	void SlowerResetTimer();
+	
 	float fHealth = 100.0f;
+	float fSlowEffect = 0.0f;
+
 	// Used to make the spells avaliable after the cool down
 	// Needs the name of the spell passed
 	

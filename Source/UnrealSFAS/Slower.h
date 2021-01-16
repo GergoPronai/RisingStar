@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+#include "UnrealSFASGameMode.h"
 #include "GameFramework/Actor.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 
@@ -12,8 +14,12 @@ UCLASS()
 class UNREALSFAS_API ASlower : public AActor
 {
 	GENERATED_BODY()
-		UPROPERTY(EditAnywhere)
-		float movementSpeed;
+
+	UPROPERTY(VisibleAnywhere)
+	AUnrealSFASGameMode* gameModeRef;
+
+	UPROPERTY(EditAnywhere)
+	float movementSpeed;
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* mesh;
 	UPROPERTY(VisibleAnywhere)
@@ -33,4 +39,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+private:
+	UFUNCTION()
+	void OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit);
 };
+

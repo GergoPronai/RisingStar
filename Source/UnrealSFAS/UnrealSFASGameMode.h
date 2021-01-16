@@ -3,7 +3,7 @@
 #pragma once
 
 #include <vector>
-#include<string>
+#include <string>
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
@@ -12,8 +12,9 @@
 struct SlowerModifier
 {
 	float cooldownModifier = 1.0f;
+	float durationModifier = 1.0f;
+	float amountModifier = 1.0f;
 };
-
 
 struct FireballModifier
 {
@@ -37,11 +38,12 @@ private:
 	// FireballEffects
 	float fireballDamage = 50.0f;
 	float fireballCooldown = 2.5f;
-	float fireballPenertartion = 0.0f;
 	bool isFireballUnlocked = false;
 
 	// SlowerEffects
 	float slowerCooldown = 3.5f;
+	float slowerAmount = 350.0f;
+	float slowerDuration = 2.0f;
 	bool isSlowerUnlocked = false;
 	
 	std::vector<std::string> upgrades =
@@ -52,6 +54,7 @@ private:
 		"Slow Unlock"
 		"Slow Duration",
 		"Slow Cooldown",
+		"Slow Amount"
 	};
 	
 	FireballModifier fireballModifier;
@@ -67,6 +70,7 @@ public:
 	
 	SlowerModifier SlowerGetModifier();
 	float SlowerGetCooldown();
+	float GetSlowerEffect();
 };
 
 

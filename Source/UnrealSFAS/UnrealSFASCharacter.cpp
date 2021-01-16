@@ -153,6 +153,7 @@ void AUnrealSFASCharacter::MoveForward(float Value)
 	if ((Controller != NULL) && (Value != 0.0f))
 	{
 		// find out which way is forward
+		//Value += fSlowEffect;
 		const FRotator Rotation = Controller->GetControlRotation();
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
 
@@ -204,6 +205,7 @@ void AUnrealSFASCharacter::Spell2()
 			FVector spawnLocation = projectileSpawnPoint->GetComponentLocation();
 			FRotator spawnRotation = projectileSpawnPoint->GetComponentRotation();
 			ASlower* slower = GetWorld()->SpawnActor<ASlower>(slowerClass, spawnLocation, spawnRotation);
+			slower->SetOwner(this);
 			onSlowerCooldown = true;
 			GetWorld()->GetTimerManager().SetTimer(timer, this, &AUnrealSFASCharacter::SlowerResetTimer, gameModeRef->SlowerGetCooldown(), false);
 		}
@@ -222,12 +224,18 @@ void AUnrealSFASCharacter::SlowerResetTimer()
 
 float AUnrealSFASCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
-	fHealth -= DamageAmount;
-	if(fHealth <= 0.0f)
+	if (DamageCauser->GetClass()->IsChildOf(AFireBall::StaticClass()))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Dead"));
-		Destroy();
+		fHealth -= DamageAmount;
+		if (fHealth <= 0.0f)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Dead"));
+			Destroy();
+		}
 	}
-
+	else if (DamageCauser->GetClass()->IsChildOf(ASlower::StaticClass()))
+	{
+		fSlowEffect = DamageAmount;
+	}
 	return DamageAmount;
 }
