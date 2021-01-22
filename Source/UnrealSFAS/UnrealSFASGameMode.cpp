@@ -14,6 +14,7 @@ AUnrealSFASGameMode::AUnrealSFASGameMode()
 	}
 }
 
+
 // UpgradeOptions AUnrealSFASGameMode::GetUpgradesOptions()
 // {
 // 	std::string upgrade1, upgrade2, upgrade3;
@@ -69,5 +70,35 @@ float AUnrealSFASGameMode::SlowerGetCooldown()
 float AUnrealSFASGameMode::GetSlowerEffect()
 {
 	return (slowerAmount + slowerModifire.amountModifier);
+}
+
+float AUnrealSFASGameMode::GetShootingDamage()
+{
+	return shootingDamage;
+}
+
+float AUnrealSFASGameMode::GetPosionDamage()
+{
+	return posionDamage;
+}
+
+float AUnrealSFASGameMode::GetPosionCooldown()
+{
+	return posionCooldown;
+}
+
+float AUnrealSFASGameMode::GetPosionDamageFrequency()
+{
+	return posionDamageFrequency;
+}
+
+void AUnrealSFASGameMode::AddScore()
+{
+	score += 10;
+}
+
+int AUnrealSFASGameMode::GetScore()
+{
+	return score;
 }
 

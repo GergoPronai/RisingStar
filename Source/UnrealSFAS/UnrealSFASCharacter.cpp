@@ -9,6 +9,7 @@
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Master_Interactable.h"
+#include "Blueprint/UserWidget.h"
 
 //////////////////////////////////////////////////////////////////////////
 // AUnrealSFASCharacter
@@ -60,6 +61,12 @@ void AUnrealSFASCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	gameModeRef = (AUnrealSFASGameMode*)GetWorld()->GetAuthGameMode();
+
+	ScoreCount = CreateWidget<UUserWidget>(GetWorld(), ScoreHUDClass);
+	if (ScoreCount != nullptr)
+	{
+		ScoreCount->AddToViewport();
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -94,12 +101,19 @@ void AUnrealSFASCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 	// Spell use
 	PlayerInputComponent->BindAction("Spell_1", IE_Pressed, this, &AUnrealSFASCharacter::Spell1);
 	PlayerInputComponent->BindAction("Spell_2", IE_Pressed, this, &AUnrealSFASCharacter::Spell2);
+	PlayerInputComponent->BindAction("Spell_3", IE_Pressed, this, &AUnrealSFASCharacter::Spell3);
+	PlayerInputComponent->BindAction("Shooting", IE_Pressed, this, &AUnrealSFASCharacter::Shooting);
 }
 
 
 void AUnrealSFASCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	if (isPosioned)
+	{
+		// Sets how often the posion effect is applied
+		GetWorld()->GetTimerManager().SetTimer(timer, this, &AUnrealSFASCharacter::PosionDamage, gameModeRef->GetPosionDamageFrequency(), false);
+	}
 }
 
 void AUnrealSFASCharacter::OnResetVR()
@@ -178,6 +192,19 @@ void AUnrealSFASCharacter::MoveRight(float Value)
 	}
 }
 
+void AUnrealSFASCharacter::Shooting()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Shooting"));
+	if (shootingClass)
+	{
+		FVector spawnLocation = projectileSpawnPoint->GetComponentLocation();
+		FRotator spawnRotation = projectileSpawnPoint->GetComponentRotation();
+		AShooting* shooting = GetWorld()->SpawnActor<AShooting>(shootingClass, spawnLocation, spawnRotation);
+		shooting->SetOwner(this);
+	}
+}
+
+
 void AUnrealSFASCharacter::Spell1()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Spell1"));
@@ -212,6 +239,24 @@ void AUnrealSFASCharacter::Spell2()
 	}
 }
 
+void AUnrealSFASCharacter::Spell3()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Spell3"));
+	if (posionClass)
+	{
+		if (!onPosionCooldown)
+		{
+			FVector spawnLocation = projectileSpawnPoint->GetComponentLocation();
+			FRotator spawnRotation = projectileSpawnPoint->GetComponentRotation();
+			APosion* posionBall = GetWorld()->SpawnActor<APosion>(posionClass, spawnLocation, spawnRotation);
+			posionBall->SetOwner(this);
+			onPosionCooldown = true;
+			isPosioned = true;
+			GetWorld()->GetTimerManager().SetTimer(timer, this, &AUnrealSFASCharacter::PosionResetCooldown, gameModeRef->GetPosionCooldown(), false);
+		}
+	}
+}
+
 void AUnrealSFASCharacter::FireballResetTimer()
 {
 		onFireballCooldown = false;
@@ -222,14 +267,26 @@ void AUnrealSFASCharacter::SlowerResetTimer()
 	onSlowerCooldown = false;
 }
 
+void AUnrealSFASCharacter::PosionResetTimer()
+{
+	isPosioned = false;
+}
+
+void AUnrealSFASCharacter::PosionResetCooldown()
+{
+	onPosionCooldown = false;
+}
+
+
 float AUnrealSFASCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
-	if (DamageCauser->GetClass()->IsChildOf(AFireBall::StaticClass()))
+	if (DamageCauser->GetClass()->IsChildOf(AFireBall::StaticClass()) || DamageCauser->GetClass()->IsChildOf(AShooting::StaticClass()))
 	{
 		fHealth -= DamageAmount;
 		if (fHealth <= 0.0f)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Dead"));
+			gameModeRef->AddScore();
 			Destroy();
 		}
 	}
@@ -238,4 +295,19 @@ float AUnrealSFASCharacter::TakeDamage(float DamageAmount, FDamageEvent const& D
 		fSlowEffect = DamageAmount;
 	}
 	return DamageAmount;
+}
+
+int AUnrealSFASCharacter::GetScore()
+{
+	return gameModeRef->GetScore();
+}
+
+void AUnrealSFASCharacter::PosionDamage()
+{
+	fHealth -= gameModeRef->GetPosionDamage();
+	if(fHealth <= 0.0f)
+	{
+		gameModeRef->AddScore();
+		Destroy();
+	}
 }

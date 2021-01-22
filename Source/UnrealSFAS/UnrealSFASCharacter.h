@@ -5,7 +5,10 @@
 #include "CoreMinimal.h"
 #include "UnrealSFASGameMode.h"
 #include "FireBall.h"
+#include "Posion.h"
 #include "Slower.h"
+#include "Shooting.h"
+#include "Blueprint/UserWidget.h"
 #include "GameFramework/Character.h"
 #include "UnrealSFASCharacter.generated.h"
 
@@ -14,6 +17,7 @@ UCLASS(config=Game)
 class AUnrealSFASCharacter : public ACharacter
 {
 	GENERATED_BODY()
+	
 	float fireballCooldown;
 	bool onFireballCooldown = false;
 	void FireballResetTimer();
@@ -25,6 +29,26 @@ class AUnrealSFASCharacter : public ACharacter
 	float fHealth = 100.0f;
 	float fSlowEffect = 0.0f;
 
+	bool isPosioned = false;
+	bool onPosionCooldown = false;
+	void PosionResetTimer();
+	void PosionResetCooldown();
+	
+	UFUNCTION(BlueprintPure)
+	int GetScore();
+	
+	UPROPERTY(EditDefaultsOnly)
+		TSubclassOf<AShooting> shootingClass;
+
+	UPROPERTY(EditAnywhere)
+	int score;
+	
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<UUserWidget> ScoreHUDClass;
+
+	UPROPERTY()
+		UUserWidget* ScoreCount;
+	
 	// Used to make the spells avaliable after the cool down
 	// Needs the name of the spell passed
 	
@@ -50,11 +74,19 @@ class AUnrealSFASCharacter : public ACharacter
 	
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<ASlower> slowerClass;
-		
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<APosion> posionClass;
+
+public:
 	/** Spell Cast **/
+	void Shooting();
 	void Spell1();
 	void Spell2();
-public:
+	void Spell3();
+
+	void PosionDamage();
+	
 	AUnrealSFASCharacter();
 
 	virtual void Tick(float DeltaTime) override;
@@ -98,7 +130,6 @@ protected:
 
 	void Interact();
 	
-protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	// End of APawn interface
