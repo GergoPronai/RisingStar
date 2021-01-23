@@ -109,11 +109,6 @@ void AUnrealSFASCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 void AUnrealSFASCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (isPosioned)
-	{
-		// Sets how often the posion effect is applied
-		GetWorld()->GetTimerManager().SetTimer(timer, this, &AUnrealSFASCharacter::PosionDamage, gameModeRef->GetPosionDamageFrequency(), false);
-	}
 }
 
 void AUnrealSFASCharacter::OnResetVR()
@@ -294,6 +289,10 @@ float AUnrealSFASCharacter::TakeDamage(float DamageAmount, FDamageEvent const& D
 	{
 		fSlowEffect = DamageAmount;
 	}
+	else if(DamageCauser->GetClass()->IsChildOf(APosion::StaticClass()))
+	{
+		GetWorld()->GetTimerManager().SetTimer(timer, this, &AUnrealSFASCharacter::PosionDamage, gameModeRef->GetPosionDamageFrequency(), true);
+	}
 	return DamageAmount;
 }
 
@@ -304,9 +303,11 @@ int AUnrealSFASCharacter::GetScore()
 
 void AUnrealSFASCharacter::PosionDamage()
 {
+	UE_LOG(LogTemp, Warning, TEXT("Posion"));
 	fHealth -= gameModeRef->GetPosionDamage();
 	if(fHealth <= 0.0f)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Dead"));
 		gameModeRef->AddScore();
 		Destroy();
 	}

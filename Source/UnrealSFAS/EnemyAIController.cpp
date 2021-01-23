@@ -19,6 +19,7 @@ void AEnemyAIController::Tick(float DeltaTime)
 	{
 		// AI starts shooting at the enemy
 		//UE_LOG(LogTemp, Warning, TEXT("AI Shooting"));
+		//character->Shooting();
 	}
 }
 
