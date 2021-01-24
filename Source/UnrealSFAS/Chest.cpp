@@ -3,6 +3,9 @@
 
 #include "Chest.h"
 
+#include "Blueprint/UserWidget.h"
+#include "Kismet/GameplayStatics.h"
+
 AChest::AChest()
 {
 	UE_LOG(LogTemp, Error, TEXT("ChestLoaded"));
@@ -14,47 +17,31 @@ AChest::AChest()
 void AChest::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
-void AChest::SpawnWeapon()
+void AChest::OpenStore()
 {
-
-	int weaponToSpawn = rand() % numberOfWeapons + 1;
-
-	if (weaponToSpawn == 0)
+	Store = CreateWidget<UUserWidget>(GetWorld(), StoreHUDClass);
+	if (Store != nullptr)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Shot Gun"));
-		weaponEquiped = Weapons::Shotgun;
+		Store->AddToViewport();
+		UGameplayStatics::SetGamePaused(GetWorld(), true);
 	}
-	
-	else if (weaponToSpawn == 1)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Katana Spawned"));
-		weaponEquiped = Weapons::Katana;
-	}
-	
-	else if (weaponToSpawn == 2)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Pistol Spawned"));
-		weaponEquiped = Weapons::Pistol;
-	}
-	
-	else if (weaponToSpawn == 3)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("AK Spawned"));
-		weaponEquiped = Weapons::AK;
-	}
-	
 }
 
+void AChest::CloseStore()
+{
+	UGameplayStatics::SetGamePaused(GetWorld(), false);
+	Destroy();
+}
 
 void AChest::Interact()
 {
 	if(!isOpened)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Open"));
-		SpawnWeapon();
+		OpenStore();
 		isOpened = true;
 	}
 }
+

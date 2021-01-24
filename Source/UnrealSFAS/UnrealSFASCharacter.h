@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+#include "Chest.h"
 #include "UnrealSFASGameMode.h"
 #include "FireBall.h"
 #include "Posion.h"
@@ -17,7 +19,9 @@ UCLASS(config=Game)
 class AUnrealSFASCharacter : public ACharacter
 {
 	GENERATED_BODY()
-	
+
+	AChest* chest;
+
 	float fireballCooldown;
 	bool onFireballCooldown = false;
 	void FireballResetTimer();
@@ -27,6 +31,11 @@ class AUnrealSFASCharacter : public ACharacter
 	void SlowerResetTimer();
 	
 	float fHealth = 100.0f;
+	const float MAX_HEALTH = 100.0f;
+	float tickingDamage = 5.0f;
+
+	float tickingDamageFrequency = 0.5f;
+	
 	float fSlowEffect = 0.0f;
 
 	bool isPosioned = false;
@@ -85,7 +94,85 @@ public:
 	void Spell2();
 	void Spell3();
 
+	void AIShooting(TSubclassOf<AShooting> _shootingClass, USceneComponent* _projectileSpawnPoint);
+	
 	void PosionDamage();
+
+	UFUNCTION(BlueprintPure)
+	float GetHealthPrecent();
+
+	void PlayerTimer();
+
+	
+	// Get Widget Output
+	UFUNCTION(BlueprintPure)
+	int GetPoisonDamageAmount();
+	UFUNCTION(BlueprintPure)
+	int GetPoisonDamageCost();
+	UFUNCTION(BlueprintPure)
+	int GetPoisonDamageLevel();
+
+	UFUNCTION(BlueprintPure)
+	int GetPoisonFrequencyAmount();
+	UFUNCTION(BlueprintPure)
+	int GetPoisonFrequencyCost();
+	UFUNCTION(BlueprintPure)
+	int GetPoisonFrequencyLevel();
+
+	UFUNCTION(BlueprintPure)
+	int GetPoisonCooldownAmount();
+	UFUNCTION(BlueprintPure)
+	int GetPoisonCooldownCost();
+	UFUNCTION(BlueprintPure)
+	int GetPoisonCooldownLevel();
+
+	UFUNCTION(BlueprintPure)
+	int GetSlowAmount();
+	UFUNCTION(BlueprintPure)
+	int GetSlowAmountCost();
+	UFUNCTION(BlueprintPure)
+	int GetSlowAmountLevel();
+
+	UFUNCTION(BlueprintPure)
+	int GetSlowCooldownAmount();
+	UFUNCTION(BlueprintPure)
+	int GetSlowCooldownCost();
+	UFUNCTION(BlueprintPure)
+	int GetSlowCooldownLevel();
+
+	UFUNCTION(BlueprintPure)
+	int GetFireballDamageAmount();
+	UFUNCTION(BlueprintPure)
+	int GetFireballDamageCost();
+	UFUNCTION(BlueprintPure)
+	int GetFireballDamageLevel();
+
+	UFUNCTION(BlueprintPure)
+	int GetFireballCooldownAmount();
+	UFUNCTION(BlueprintPure)
+	int GetFireballCooldownCost();
+	UFUNCTION(BlueprintPure)
+	int GetFireballCooldownLevel();
+
+	UFUNCTION(BlueprintCallable)
+	void PoisonDamageUpgrade();
+	UFUNCTION(BlueprintCallable)
+	void PoisonFrequencyUpgrade();
+	UFUNCTION(BlueprintCallable)
+	void PoisonCooldownUpgrade();
+
+	UFUNCTION(BlueprintCallable)
+	void SlowAmountUpgrade();
+	UFUNCTION(BlueprintCallable)
+	void SlowCooldownUpgrade();
+
+	UFUNCTION(BlueprintCallable)
+	void FireballDamageUpgrade();
+	UFUNCTION(BlueprintCallable)
+	void FireballCooldownUpgrade();
+	
+	UFUNCTION(BlueprintCallable)
+	void CloseChest();
 	
 	AUnrealSFASCharacter();
 

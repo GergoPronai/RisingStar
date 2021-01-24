@@ -3,6 +3,12 @@
 
 #include "EnemyAIController.h"
 
+#include "Kismet/GameplayStatics.h"
+AEnemyAIController::AEnemyAIController()
+{
+	
+}
+
 void AEnemyAIController::BeginPlay()
 {
 	Super::BeginPlay();
@@ -14,12 +20,19 @@ void AEnemyAIController::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	
 	SetFocus(PlayerPawn);
-	MoveToActor(PlayerPawn, 20.0f);
 	if(LineOfSightTo(PlayerPawn) && IsInFront(PlayerPawn))
 	{
-		// AI starts shooting at the enemy
-		//UE_LOG(LogTemp, Warning, TEXT("AI Shooting"));
-		//character->Shooting();
+		if(isShooting == false)
+		{
+			GetWorld()->GetTimerManager().SetTimer(timer, this, &AEnemyAIController::ResetTimer, fireRate, false);
+			AUnrealSFASCharacter* character = Cast<AUnrealSFASCharacter>(GetPawn());
+			character->Shooting();
+			isShooting = true;
+		}
+	}
+	else
+	{
+		MoveToActor(PlayerPawn, 20.0f);
 	}
 }
 
@@ -35,4 +48,9 @@ bool AEnemyAIController::IsInFront(AActor* ActorToCheck)
 	float directionDotProduct = FVector::DotProduct(AIToPlayerVector, AIForwardVector);
 	if (directionDotProduct > 0.0f) return true;
 	else							return false;
+}
+
+void AEnemyAIController::ResetTimer()
+{
+	isShooting = false;
 }

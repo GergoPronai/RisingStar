@@ -41,17 +41,24 @@ void ASlower::Tick(float DeltaTime)
 
 void ASlower::OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit)
 {
+	AActor* projectileOwner = GetOwner();
 	if(OtherActor->GetClass()->IsChildOf(AUnrealSFASCharacter::StaticClass()))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Slow effect applied"));
-		AActor* projectileOwner = GetOwner();
-		UGameplayStatics::ApplyDamage(
-			OtherActor,
-			gameModeRef->GetSlowerEffect(),
-			projectileOwner->GetInstigatorController(),
-			this,
-			UDamageType::StaticClass()
-		);
+		if (OtherActor != projectileOwner)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Slow effect applied"));
+			UGameplayStatics::ApplyDamage(
+				OtherActor,
+				gameModeRef->GetSlowerEffect(),
+				projectileOwner->GetInstigatorController(),
+				this,
+				UDamageType::StaticClass()
+			);
+		}
 	}
-	Destroy();
+	
+	if (OtherActor != projectileOwner)
+	{
+		Destroy();
+	}
 }

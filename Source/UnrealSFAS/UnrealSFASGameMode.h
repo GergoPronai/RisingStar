@@ -8,25 +8,11 @@
 #include "GameFramework/GameModeBase.h"
 #include "UnrealSFASGameMode.generated.h"
 
-struct SlowerModifier
+struct Upgrades
 {
-	float cooldownModifier = 1.0f;
-	float durationModifier = 1.0f;
-	float amountModifier = 1.0f;
-};
-
-struct FireballModifier
-{
-	float damageModifier = 1.0f;
-	float cooldownModifier = 1.0f;
-	float penetrationModifier = 1.0f;
-};
-
-struct UpgradeOptions
-{
-	std::string upgradeOption1;
-	std::string upgradeOption2;
-	std::string upgradeOption3;
+	int amount;
+	int cost;
+	int level;
 };
 
 UCLASS(minimalapi)
@@ -53,30 +39,25 @@ private:
 	float shootingDamage = 10.0f;
 
 	int score = 0;
+
+	Upgrades poisonDamage;
+	Upgrades poisonFrequency;
+	Upgrades poisonCooldown;
 	
-	std::vector<std::string> upgrades =
-	{
-		"Fireball Unlock",
-		"Fireball Damage",
-		"Fireball Cooldown",
-		"Slow Unlock"
-		"Slow Duration",
-		"Slow Cooldown",
-		"Slow Amount"
-	};
+	Upgrades SlowAmount;
+	Upgrades SlowCooldown;
 	
-	FireballModifier fireballModifier;
-	SlowerModifier slowerModifire;
+	Upgrades FireballDamage;
+	Upgrades FireballCooldown;
+
+	
 
 public:
 	AUnrealSFASGameMode();
-	UpgradeOptions GetUpgradesOptions();
 	void SetUpgrade();
-	FireballModifier FireballGetModifier();
 	float FireballGetCooldown();
 	float GetFireballDamage();
 	
-	SlowerModifier SlowerGetModifier();
 	float SlowerGetCooldown();
 	float GetSlowerEffect();
 	float GetShootingDamage();
@@ -87,4 +68,42 @@ public:
 	
 	int GetScore();
 	void AddScore();
+
+	int GetPoisonDamageAmount();
+	int GetPoisonDamageCost();
+	int GetPoisonDamageLevel();
+
+	int GetPoisonFrequencyAmount();
+	int GetPoisonFrequencyCost();
+	int GetPoisonFrequencyLevel();
+
+	int GetPoisonCooldownAmount();
+	int GetPoisonCooldownCost();
+	int GetPoisonCooldownLevel();
+
+	int GetSlowAmount();
+	int GetSlowAmountCost();
+	int GetSlowAmountLevel();
+
+	int GetSlowCooldownAmount();
+	int GetSlowCooldownCost();
+	int GetSlowCooldownLevel();
+
+	int GetFireballDamageAmount();
+	int GetFireballDamageCost();
+	int GetFireballDamageLevel();
+
+	int GetFireballCooldownAmount();
+	int GetFireballCooldownCost();
+	int GetFireballCooldownLevel();
+
+	void PoisonDamageUpgrade();
+	void PoisonFrequencyUpgrade();
+	void PoisonCooldownUpgrade();
+
+	void SlowAmountUpgrade();
+	void SlowCooldownUpgrade();
+
+	void FireballDamageUpgrade();
+	void FireballCooldownUpgrade();
 };

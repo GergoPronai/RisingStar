@@ -2,11 +2,8 @@
 
 #pragma once
 
-#include "Kismet/GameplayStatics.h"
-
 #include "CoreMinimal.h"
 #include "AIController.h"
-#include "Shooting.h"
 #include "UnrealSFASCharacter.h"
 
 
@@ -23,8 +20,20 @@ class UNREALSFAS_API AEnemyAIController : public AAIController
 	APawn* PlayerPawn;
 	APawn* AIPawn;
 
-	AUnrealSFASCharacter* character;
+	UPROPERTY(VisibleAnywhere)
+	USceneComponent* projectileSpawnPoint;
 	
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AShooting> shootingClass;
+	
+	float fireRate = 1.5f;
+	bool isShooting = false;
+
+	UPROPERTY(VisibleAnywhere)
+		FTimerHandle timer;
+	void ResetTimer();
+public:
+	AEnemyAIController();
 protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;

@@ -10,6 +10,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Master_Interactable.h"
 #include "Blueprint/UserWidget.h"
+#include "Kismet/GameplayStatics.h"
 
 //////////////////////////////////////////////////////////////////////////
 // AUnrealSFASCharacter
@@ -61,7 +62,10 @@ void AUnrealSFASCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	gameModeRef = (AUnrealSFASGameMode*)GetWorld()->GetAuthGameMode();
+	chest = (AChest*)GetWorld()->GetAuthGameMode();
 
+	GetWorld()->GetTimerManager().SetTimer(timer, this, &AUnrealSFASCharacter::PlayerTimer, tickingDamageFrequency, true);
+	
 	ScoreCount = CreateWidget<UUserWidget>(GetWorld(), ScoreHUDClass);
 	if (ScoreCount != nullptr)
 	{
@@ -189,15 +193,17 @@ void AUnrealSFASCharacter::MoveRight(float Value)
 
 void AUnrealSFASCharacter::Shooting()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Shooting"));
 	if (shootingClass)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Shooting"));
 		FVector spawnLocation = projectileSpawnPoint->GetComponentLocation();
 		FRotator spawnRotation = projectileSpawnPoint->GetComponentRotation();
 		AShooting* shooting = GetWorld()->SpawnActor<AShooting>(shootingClass, spawnLocation, spawnRotation);
 		shooting->SetOwner(this);
 	}
 }
+
+
 
 
 void AUnrealSFASCharacter::Spell1()
@@ -272,7 +278,6 @@ void AUnrealSFASCharacter::PosionResetCooldown()
 	onPosionCooldown = false;
 }
 
-
 float AUnrealSFASCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	if (DamageCauser->GetClass()->IsChildOf(AFireBall::StaticClass()) || DamageCauser->GetClass()->IsChildOf(AShooting::StaticClass()))
@@ -311,4 +316,168 @@ void AUnrealSFASCharacter::PosionDamage()
 		gameModeRef->AddScore();
 		Destroy();
 	}
+}
+
+float AUnrealSFASCharacter::GetHealthPrecent()
+{
+	return fHealth / MAX_HEALTH;
+}
+
+void AUnrealSFASCharacter::PlayerTimer()
+{
+	//fHealth -= tickingDamage;
+}
+
+void AUnrealSFASCharacter::CloseChest()
+{
+	chest->CloseStore();
+}
+
+int AUnrealSFASCharacter::GetPoisonDamageAmount()
+{
+	return gameModeRef->GetPoisonDamageAmount();
+}
+
+int AUnrealSFASCharacter::GetPoisonDamageCost()
+{
+	return gameModeRef->GetPoisonDamageCost();
+}
+
+int AUnrealSFASCharacter::GetPoisonDamageLevel()
+{
+	return gameModeRef->GetPoisonDamageLevel();
+}
+
+int AUnrealSFASCharacter::GetPoisonFrequencyAmount()
+{
+	return gameModeRef->GetPoisonFrequencyAmount();
+}
+
+int AUnrealSFASCharacter::GetPoisonFrequencyCost()
+{
+	return gameModeRef->GetPoisonFrequencyCost();
+}
+
+int AUnrealSFASCharacter::GetPoisonFrequencyLevel()
+{
+	return gameModeRef->GetPoisonFrequencyLevel();
+}
+
+int AUnrealSFASCharacter::GetPoisonCooldownAmount()
+{
+	return gameModeRef->GetPoisonCooldownAmount();
+}
+
+int AUnrealSFASCharacter::GetPoisonCooldownCost()
+{
+	return gameModeRef->GetPoisonCooldownCost();
+}
+
+int AUnrealSFASCharacter::GetPoisonCooldownLevel()
+{
+	return gameModeRef->GetPoisonCooldownLevel();
+}
+
+int AUnrealSFASCharacter::GetSlowAmount()
+{
+	return gameModeRef->GetSlowAmount();
+}
+
+int AUnrealSFASCharacter::GetSlowAmountCost()
+{
+	return gameModeRef->GetSlowAmountCost();
+}
+
+int AUnrealSFASCharacter::GetSlowAmountLevel()
+{
+	return gameModeRef->GetSlowAmountLevel();
+}
+
+int AUnrealSFASCharacter::GetSlowCooldownAmount()
+{
+	return gameModeRef->GetSlowCooldownAmount();
+}
+
+int AUnrealSFASCharacter::GetSlowCooldownCost()
+{
+	return gameModeRef->GetSlowCooldownCost();
+}
+
+int AUnrealSFASCharacter::GetSlowCooldownLevel()
+{
+	return gameModeRef->GetSlowCooldownLevel();
+}
+
+int AUnrealSFASCharacter::GetFireballDamageAmount()
+{
+	return gameModeRef->GetFireballDamageAmount();
+}
+
+int AUnrealSFASCharacter::GetFireballDamageCost()
+{
+	return gameModeRef->GetFireballDamageCost();
+}
+
+int AUnrealSFASCharacter::GetFireballDamageLevel()
+{
+	return gameModeRef->GetFireballDamageLevel();
+}
+
+int AUnrealSFASCharacter::GetFireballCooldownAmount()
+{
+	return gameModeRef->GetFireballCooldownAmount();
+}
+
+int AUnrealSFASCharacter::GetFireballCooldownCost()
+{
+	return gameModeRef->GetFireballCooldownCost();
+}
+
+int AUnrealSFASCharacter::GetFireballCooldownLevel()
+{
+	return gameModeRef->GetFireballCooldownLevel();
+}
+
+void AUnrealSFASCharacter::PoisonDamageUpgrade()
+{
+	gameModeRef->PoisonDamageUpgrade();
+}
+
+void AUnrealSFASCharacter::PoisonFrequencyUpgrade()
+{
+	gameModeRef->PoisonFrequencyUpgrade();
+}
+
+void AUnrealSFASCharacter::PoisonCooldownUpgrade()
+{
+	gameModeRef->PoisonCooldownUpgrade();
+}
+
+void AUnrealSFASCharacter::SlowAmountUpgrade()
+{
+	gameModeRef->SlowAmountUpgrade();
+}
+
+void AUnrealSFASCharacter::SlowCooldownUpgrade()
+{
+	gameModeRef->SlowCooldownUpgrade();
+}
+
+void AUnrealSFASCharacter::FireballDamageUpgrade()
+{
+	gameModeRef->FireballDamageUpgrade();
+}
+
+void AUnrealSFASCharacter::FireballCooldownUpgrade()
+{
+	gameModeRef->FireballCooldownUpgrade();
+}
+
+void AUnrealSFASCharacter::AIShooting(TSubclassOf<AShooting> _shootingClass, USceneComponent* _projectileSpawnPoint)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Shooting"));
+	FVector spawnLocation = _projectileSpawnPoint->GetComponentLocation();
+	FRotator spawnRotation = _projectileSpawnPoint->GetComponentRotation();
+	AShooting* shooting = GetWorld()->SpawnActor<AShooting>(_shootingClass, spawnLocation, spawnRotation);
+	shooting->SetOwner(this);
 }

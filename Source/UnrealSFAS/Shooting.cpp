@@ -41,17 +41,24 @@ void AShooting::Tick(float DeltaTime)
 void AShooting::OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit)
 {
 	UE_LOG(LogTemp, Warning, TEXT("GotCalled"));
+	AActor* projectileOwner = GetOwner();
 	if (OtherActor->GetClass()->IsChildOf(AUnrealSFASCharacter::StaticClass()))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Hit"));
-		AActor* projectileOwner = GetOwner();
-		UGameplayStatics::ApplyDamage(
-			OtherActor,
-			gameModeRef->GetShootingDamage(),
-			projectileOwner->GetInstigatorController(),
-			this,
-			UDamageType::StaticClass()
-		);
+		if (OtherActor != projectileOwner)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Hit"));
+			UGameplayStatics::ApplyDamage(
+				OtherActor,
+				gameModeRef->GetShootingDamage(),
+				projectileOwner->GetInstigatorController(),
+				this,
+				UDamageType::StaticClass()
+			);
+		}
 	}
-	Destroy();
+	
+	if(OtherActor != projectileOwner)
+	{
+		Destroy();
+	}
 }

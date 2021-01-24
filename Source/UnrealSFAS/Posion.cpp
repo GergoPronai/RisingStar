@@ -43,17 +43,24 @@ void APosion::Tick(float DeltaTime)
 
 void APosion::OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit)
 {
+	AActor* projectileOwner = GetOwner();
 	if (OtherActor->GetClass()->IsChildOf(AUnrealSFASCharacter::StaticClass()))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Hit"));
-		AActor* projectileOwner = GetOwner();
-		UGameplayStatics::ApplyDamage(
-			OtherActor,
-			gameModeRef->GetFireballDamage(),
-			projectileOwner->GetInstigatorController(),
-			this,
-			UDamageType::StaticClass()
-		);
+		if (OtherActor != projectileOwner)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Hit"));
+			UGameplayStatics::ApplyDamage(
+				OtherActor,
+				gameModeRef->GetFireballDamage(),
+				projectileOwner->GetInstigatorController(),
+				this,
+				UDamageType::StaticClass()
+			);
+		}
 	}
-	Destroy();
+	
+	if (OtherActor != projectileOwner)
+	{
+		Destroy();
+	}
 }
