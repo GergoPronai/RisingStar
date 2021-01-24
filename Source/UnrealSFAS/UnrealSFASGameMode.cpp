@@ -2,6 +2,7 @@
 
 #include "UnrealSFASGameMode.h"
 #include "UnrealSFASCharacter.h"
+#include "Kismet/GameplayStatics.h"
 #include "UObject/ConstructorHelpers.h"
 
 AUnrealSFASGameMode::AUnrealSFASGameMode()
@@ -12,54 +13,53 @@ AUnrealSFASGameMode::AUnrealSFASGameMode()
 	{
 		DefaultPawnClass = PlayerPawnBPClass.Class;
 	}
-
-	poisonDamage.amount = 10;
-	poisonDamage.cost = 5;
-	poisonDamage.level = 1;
-	
-	poisonFrequency.amount = 10;
-	poisonFrequency.cost = 5;
-	poisonFrequency.level = 1;
-
-	poisonCooldown.amount = 10;
-	poisonCooldown.cost = 5;
-	poisonCooldown.level = 1;
-	
-	SlowAmount.amount = 10;
-	SlowAmount.cost = 5;
-	SlowAmount.level = 1;
-	
-	SlowCooldown.amount = 10;
-	SlowCooldown.cost = 5;
-	SlowCooldown.level = 1;
-	
-	FireballDamage.amount = 10;
-	FireballDamage.cost = 5;
-	FireballDamage.level = 1;
-
-	FireballCooldown.amount = 10;
-	FireballCooldown.cost = 5;
-	FireballCooldown.level = 1;
 }
+
+void AUnrealSFASGameMode::BeginPlay()
+{
+	Super::BeginPlay();
+	gameInstance = Cast<UAtributesGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	
+	UE_LOG(LogTemp, Warning, TEXT("!?"));
+	score = gameInstance->GetScore();
+
+	poisonDamage = gameInstance->GetPoisonDamage();
+	poisonFrequency = gameInstance->GetPoisonFrequency();
+	poisonCooldown = gameInstance->GetPoisonCooldown();
+
+	SlowAmount = gameInstance->GetSlowAmount();
+	SlowCooldown = gameInstance->GetSlowCooldown();
+
+	FireballDamage = gameInstance->GetFireballDamage();
+	FireballCooldown = gameInstance->GetFireballCooldown();
+}
+
+void AUnrealSFASGameMode::LoadLevel()
+{
+	gameInstance->SetData(score, poisonDamage, poisonFrequency, poisonCooldown,
+		SlowAmount, SlowCooldown, FireballDamage, FireballCooldown);
+	UGameplayStatics::OpenLevel(GetWorld(), "MazeBase");
+}
+
 
 float AUnrealSFASGameMode::FireballGetCooldown()
 {
-	return fireballCooldown;
+	return (fireballCooldown - (fireballCooldown * FireballCooldown.amount / 100));
 }
 
 float AUnrealSFASGameMode::GetFireballDamage()
 {
-	return fireballDamage;
+	return (fireballDamage + (fireballDamage * FireballDamage.amount / 100));
 }
 
 float AUnrealSFASGameMode::SlowerGetCooldown()
 {
-	return slowerCooldown;
+	return (slowerCooldown - (slowerCooldown * SlowCooldown.amount / 100));
 }
 
 float AUnrealSFASGameMode::GetSlowerEffect()
 {
-	return slowerAmount;
+	return (slowerAmount + (slowerAmount * SlowAmount.amount / 100));
 }
 
 float AUnrealSFASGameMode::GetShootingDamage()
@@ -69,17 +69,17 @@ float AUnrealSFASGameMode::GetShootingDamage()
 
 float AUnrealSFASGameMode::GetPosionDamage()
 {
-	return posionDamage;
+	return (posionDamage + (posionDamage * poisonDamage.amount / 100));
 }
 
 float AUnrealSFASGameMode::GetPosionCooldown()
 {
-	return posionCooldown;
+	return (posionCooldown - (posionCooldown * poisonCooldown.amount / 100));
 }
 
 float AUnrealSFASGameMode::GetPosionDamageFrequency()
 {
-	return posionDamageFrequency;
+	return (posionDamageFrequency - (posionDamageFrequency * poisonFrequency.amount / 100));
 }
 
 void AUnrealSFASGameMode::AddScore()

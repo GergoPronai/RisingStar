@@ -32,7 +32,7 @@ void AEnemyAIController::Tick(float DeltaTime)
 	}
 	else
 	{
-		MoveToActor(PlayerPawn, 20.0f);
+		MoveToActor(PlayerPawn, 100.0f);
 	}
 }
 

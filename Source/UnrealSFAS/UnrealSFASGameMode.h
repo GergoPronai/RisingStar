@@ -5,22 +5,20 @@
 #include <vector>
 #include <string>
 #include "CoreMinimal.h"
+
+#include "AtributesGameInstance.h"
 #include "GameFramework/GameModeBase.h"
 #include "UnrealSFASGameMode.generated.h"
 
-struct Upgrades
-{
-	int amount;
-	int cost;
-	int level;
-};
 
 UCLASS(minimalapi)
 class AUnrealSFASGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 private:
-	// FireballEffects
+
+	UAtributesGameInstance* gameInstance;
+	
 	float fireballDamage = 50.0f;
 	float fireballCooldown = 2.5f;
 	bool isFireballUnlocked = false;
@@ -35,25 +33,27 @@ private:
 	float posionLast = 2.5f;
 	float posionDamageFrequency = 0.5f;
 	float posionCooldown = 4.5f;
-	
+
 	float shootingDamage = 10.0f;
 
-	int score = 0;
-
+	int score;
+	
 	Upgrades poisonDamage;
 	Upgrades poisonFrequency;
 	Upgrades poisonCooldown;
-	
+
 	Upgrades SlowAmount;
 	Upgrades SlowCooldown;
-	
+
 	Upgrades FireballDamage;
 	Upgrades FireballCooldown;
 
-	
 
 public:
 	AUnrealSFASGameMode();
+	virtual void BeginPlay() override;
+	void LoadLevel();
+	
 	void SetUpgrade();
 	float FireballGetCooldown();
 	float GetFireballDamage();

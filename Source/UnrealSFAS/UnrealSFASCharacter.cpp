@@ -19,7 +19,7 @@ AUnrealSFASCharacter::AUnrealSFASCharacter()
 {
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
-
+	
 	// set our turn rates for input
 	BaseTurnRate = 45.f;
 	BaseLookUpRate = 45.f;
@@ -67,7 +67,7 @@ void AUnrealSFASCharacter::BeginPlay()
 	GetWorld()->GetTimerManager().SetTimer(timer, this, &AUnrealSFASCharacter::PlayerTimer, tickingDamageFrequency, true);
 	
 	ScoreCount = CreateWidget<UUserWidget>(GetWorld(), ScoreHUDClass);
-	if (ScoreCount != nullptr)
+	if (ScoreCount != nullptr && GetWorld()->GetName() == "MazeBase")
 	{
 		ScoreCount->AddToViewport();
 	}
@@ -166,7 +166,12 @@ void AUnrealSFASCharacter::MoveForward(float Value)
 	if ((Controller != NULL) && (Value != 0.0f))
 	{
 		// find out which way is forward
-		//Value += fSlowEffect;
+		
+		if(isSlowed)
+		{
+			Value -= fSlowEffect;
+			isSlowed = false;
+		}
 		const FRotator Rotation = Controller->GetControlRotation();
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
 
@@ -293,6 +298,7 @@ float AUnrealSFASCharacter::TakeDamage(float DamageAmount, FDamageEvent const& D
 	else if (DamageCauser->GetClass()->IsChildOf(ASlower::StaticClass()))
 	{
 		fSlowEffect = DamageAmount;
+		isSlowed = true;
 	}
 	else if(DamageCauser->GetClass()->IsChildOf(APosion::StaticClass()))
 	{
@@ -480,4 +486,9 @@ void AUnrealSFASCharacter::AIShooting(TSubclassOf<AShooting> _shootingClass, USc
 	FRotator spawnRotation = _projectileSpawnPoint->GetComponentRotation();
 	AShooting* shooting = GetWorld()->SpawnActor<AShooting>(_shootingClass, spawnLocation, spawnRotation);
 	shooting->SetOwner(this);
+}
+
+void AUnrealSFASCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	
 }

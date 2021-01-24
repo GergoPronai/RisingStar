@@ -23,7 +23,7 @@ void AUnrealSFASMaze::BeginPlay()
 		const float blockWidth = 2.0f;
 		const float blockHeight = 5.0f;
 		const float blockZPos = 50.0f;
-
+		
 		// Array of binary values: 1 = wall, 0 = space
 		uint32 mazeArray[mazeSize] = {	0b11111111111111111111,
 										0b10100000000000000001,
@@ -45,7 +45,6 @@ void AUnrealSFASMaze::BeginPlay()
 										0b10111111111110111101,
 										0b10000000000000000001,
 										0b11111111111111111101 };
-
 		float xPos = 0.0f;
 		float yPos = 0.0f;
 		FQuat worldRotation(FVector(0.0f, 0.0f, 1.0f), 0.0f);

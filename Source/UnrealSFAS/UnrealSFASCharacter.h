@@ -28,6 +28,7 @@ class AUnrealSFASCharacter : public ACharacter
 	
 	float slowerCooldown;
 	bool onSlowerCooldown = false;
+	bool isSlowed = false;
 	void SlowerResetTimer();
 	
 	float fHealth = 100.0f;
@@ -62,6 +63,7 @@ class AUnrealSFASCharacter : public ACharacter
 	// Needs the name of the spell passed
 	
 	AUnrealSFASGameMode* gameModeRef;
+	
 	UPROPERTY(VisibleAnywhere)
 	FTimerHandle timer;
 	
@@ -87,6 +89,7 @@ class AUnrealSFASCharacter : public ACharacter
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<APosion> posionClass;
 
+	void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 public:
 	/** Spell Cast **/
 	void Shooting();
@@ -102,7 +105,7 @@ public:
 	float GetHealthPrecent();
 
 	void PlayerTimer();
-
+	
 	
 	// Get Widget Output
 	UFUNCTION(BlueprintPure)

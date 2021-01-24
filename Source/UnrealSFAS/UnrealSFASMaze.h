@@ -7,6 +7,7 @@
 #include "UnrealSFASMaze.generated.h"
 
 UCLASS()
+
 class UNREALSFAS_API AUnrealSFASMaze : public AActor
 {
 	GENERATED_BODY()
@@ -14,7 +15,6 @@ class UNREALSFAS_API AUnrealSFASMaze : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AUnrealSFASMaze();
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

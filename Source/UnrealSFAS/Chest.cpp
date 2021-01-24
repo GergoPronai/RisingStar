@@ -8,7 +8,7 @@
 
 AChest::AChest()
 {
-	UE_LOG(LogTemp, Error, TEXT("ChestLoaded"));
+	//UE_LOG(LogTemp, Error, TEXT("ChestLoaded"));
 	isOpened = false;
 	numberOfWeapons = 3; // Index 0 to 3
 	
